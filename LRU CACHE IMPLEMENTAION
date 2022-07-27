@@ -9,7 +9,7 @@ class LRUCache
         int key;
         node *next;
         node *prev;
-        node(int key_,int val_)  //vvvvvv imp tune order reverese kr dia tha val,key that caused blunderrrr
+        node(int key_,int val_)  
         {
             val=val_;
             key=key_;
@@ -20,10 +20,10 @@ class LRUCache
     node *head=new node(-1,-1);
     node *tail=new node(-1,-1);
     int cap;
-    unordered_map<int,node*> mpp;   //<key,address of node with that key>
+    unordered_map<int,node*> mpp;   
     LRUCache(int capacity)
     {
-        cap=capacity;  // agr cap ki jagah capacity main likhon so caused error
+        cap=capacity; 
         head->next=tail;
         tail->prev=head;
     }
