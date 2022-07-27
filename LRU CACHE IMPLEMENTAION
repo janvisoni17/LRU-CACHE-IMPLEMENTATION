@@ -1,0 +1,166 @@
+#include<bits/stdc++.h>
+class LRUCache
+{
+    public:
+    class node
+    {
+        public:
+        int val;
+        int key;
+        node *next;
+        node *prev;
+        node(int key_,int val_)  //vvvvvv imp tune order reverese kr dia tha val,key that caused blunderrrr
+        {
+            val=val_;
+            key=key_;
+        }
+
+    };
+    
+    node *head=new node(-1,-1);
+    node *tail=new node(-1,-1);
+    int cap;
+    unordered_map<int,node*> mpp;   //<key,address of node with that key>
+    LRUCache(int capacity)
+    {
+        cap=capacity;  // agr cap ki jagah capacity main likhon so caused error
+        head->next=tail;
+        tail->prev=head;
+    }
+    
+    void addnode(node *newnode)
+    {
+        node *temp=head->next;
+        newnode->next=temp;
+        newnode->prev=head;
+        head->next=newnode;
+        temp->prev=newnode;
+    }
+    
+    void delnode(node *newnode)
+    {
+        newnode->prev->next=newnode->next;
+        newnode->next->prev=newnode->prev;
+    }
+
+
+    int get(int key)
+    {
+        // Write your code here
+        if(mpp.find(key)!=mpp.end())
+        {
+            node *resnode=mpp[key];
+            int res=resnode->val;
+            mpp.erase(key);
+            delnode(resnode);
+            addnode(resnode);
+            mpp[key]=head->next;
+            return res;
+        }
+        else
+        return -1;
+    }
+
+    void put(int key, int value)
+    {
+        if(mpp.find(key)!=mpp.end())
+        {
+            node *existingnode=mpp[key];
+            mpp.erase(key);
+            delnode(existingnode);
+            
+        }
+        if(mpp.size()==cap)
+        {
+            mpp.erase(tail->prev->key);
+            delnode(tail->prev);
+        }
+        
+        addnode(new node(key,value));
+        mpp[key]=head->next;
+    }
+};
+
+
+
+https://leetcode.com/problems/lru-cache/submissions/
+
+
+
+class LRUCache
+{
+    public:
+    class node
+    {
+        public:
+        int val;
+        int key;
+        node *next;
+        node *prev;
+        node(int key_,int val_)  //vvvvvv imp tune order reverese kr dia tha val,key that caused blunderrrr
+        {
+            val=val_;
+            key=key_;
+        }
+
+    };
+    
+    node *head=new node(-1,-1);
+    node *tail=new node(-1,-1);
+    int cap;
+    map<int,node*> mpp;   //unordered gives TLE and this doesn’t 
+    
+    LRUCache(int capacity) {
+        cap=capacity;
+        head->next=tail;
+        tail->prev=head;
+    }
+    
+     void addnode(node *newnode)
+    {
+        node *temp=head->next;
+        newnode->next=temp;
+        newnode->prev=head;
+        head->next=newnode;
+        temp->prev=newnode;
+    }
+    
+    void delnode(node *newnode)
+    {
+        newnode->prev->next=newnode->next;
+        newnode->next->prev=newnode->prev;
+    }
+    
+    int get(int key) {
+       if(mpp.find(key)!=mpp.end())
+        {
+            node *resnode=mpp[key];
+            int res=resnode->val;
+            mpp.erase(key);
+            delnode(resnode);
+            addnode(resnode);
+            mpp[key]=head->next;
+            return res;
+        }
+        else
+        return -1; 
+    }
+    
+    void put(int key, int value) {
+      if(mpp.find(key)!=mpp.end())
+        {
+            node *existingnode=mpp[key];
+            mpp.erase(key);
+            delnode(existingnode);
+            
+        }
+        if(mpp.size()==cap)
+        {
+            mpp.erase(tail->prev->key);
+            delnode(tail->prev);
+        }
+        
+        addnode(new node(key,value));
+        mpp[key]=head->next;  
+    }
+};
